@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Israeldelira/BACKEND_INVENTARIO#readme",
   "dependencies": {
+    "aws-sdk": "^2.1031.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",

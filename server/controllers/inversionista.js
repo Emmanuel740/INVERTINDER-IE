@@ -7,7 +7,7 @@ const Inversionista= require('../models/inversionista');
 const getInversionistas = async (req, res) => {
     try {
         const inversionistas = await Inversionista.find()
-            .populate('registroUsuario')
+            .populate('registroUsuario' ,'nombre apellidos')
            
         // allArticles.date.toDateString();
 

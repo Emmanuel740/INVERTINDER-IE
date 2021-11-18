@@ -1,8 +1,31 @@
 //Modules and files
+const AWS = require('aws-sdk');
+const S3 = new AWS.S3({ apiVersion: 'latest', accessKeyId: "AKIA3MPXGIUB5WGKE4SB"	, secretAccessKey: "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" });
+const bucket = "movile-apps"
 
 const Usuario = require('../models/usuario');
 const bcryptjs = require('bcryptjs');
 const { generateJWT } = require('../helpers/jwt');
+
+//funcion subir img
+async function uploadIMG(foto, user) {
+    let date = new Date()
+    let fecha = date.getDate();
+    let sec = date.getSeconds();
+    let Key = `images/${fecha}-${sec}.jpg`;
+    let Img = Buffer.from(foto.replace(/^data:image\/\w+;base64,/, ""),'base64')
+    var data = {
+        Key,
+        Body: Img,
+        Bucket: bucket,
+        ContentEncoding: 'base64',
+        ContentType: 'image/jpeg'
+    };
+    const result = await S3.upload(data).promise();
+    console.log(result)
+    
+    return result.Location
+}
 
 //<-------------GET all users  ---------------->
 
@@ -32,6 +55,7 @@ const getUsuarios = async (req, res) => {
 const crearUsuario = async (req, res) => {
 
     const { nombre, apellidos,user,email,password,telefono,img } = req.body;
+    let imagen = "";
 
     try {
 
@@ -43,6 +67,9 @@ const crearUsuario = async (req, res) => {
                 msg: 'El usuario ya esta registrado'
             });
         }
+        if(img !== ""){
+            imagen = await uploadIMG(img)
+        }
          // Validation of user with username
          const validacionEmail = await Usuario.findOne({ email });
          if (validacionEmail) {
@@ -51,6 +78,7 @@ const crearUsuario = async (req, res) => {
                  msg: 'El email ya esta registrado'
              });
          }
+
         //password encryption with bycryptjs
         const password = await bcryptjs.hash(req.body.password, 12);
         const newUsuario = new Usuario(
@@ -61,7 +89,7 @@ const crearUsuario = async (req, res) => {
                 email,
                 telefono,
                 password,
-                img,
+                img:imagen,
             });
         // const salt = bcryptjs.genSaltSync();
         // users.password = bcryptjs.hashSync(password, salt);
@@ -161,7 +189,7 @@ const eliminarUsuario = async (req, res) => {
 
         res.json({
             ok: true,
-            msg: "Usuario eliminado con exito"
+            msg: "La cuenta se ha eliminado con exito"
         })
 
     } catch (error) {

@@ -42,10 +42,10 @@ const UsuarioSchema = new mongoose.Schema(
         cuentaBanco:{
             type: String
         },
-        // documentosProyecto: {
-        //     type: Schema.Types.ObjectId,
-        //     ref: "DocumentoProyecto"
-        // },
+        documentosUsuario: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "DocumentoUsuario"
+        },
         // documentosInversion: {
         //     type: Schema.Types.ObjectId,
         //     ref: "DocumentoInversion"

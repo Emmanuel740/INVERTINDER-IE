@@ -25,7 +25,7 @@ const DocumentoUsuarioSchema = new mongoose.Schema(
             required: [true, 'Comprobante de domicilio es requerido'],
         },
         perteneceUsuario: {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: "Usuario"
         },
         fechaRegDoc: {
