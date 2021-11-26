@@ -1,9 +1,8 @@
 'use strict';
 //Modules and files
 require("dotenv").config();
-
+const cors = require('cors')
 const express = require("express");
-
 const connectionDB = require("./config/db");
 const { PORT } = require("./config/config");
 
@@ -15,7 +14,8 @@ app.use(express.json());
 
 
 //Configuracion del CORS
-
+app.use(cors())
+ 
 app.use(express.json());
 
 //Index of routes

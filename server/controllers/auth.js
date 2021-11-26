@@ -35,6 +35,7 @@ const login = async (req, res) => {
             res.json({
                 status: 200,
                 ok: true,
+                emailDB,
                 token
 
             })
