@@ -32,14 +32,30 @@ const ProyectoSchema = new mongoose.Schema(
             ref: "Usuario",
             required: [true, 'El usuario quien registra es requerido'],
         },
-        inversionistas:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Inversionista"
+        tieneInversionista:{
+            type: Boolean,
+            default: false, 
         },
-        archivosProyecto:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "DocumentoProyecto"
+        tieneArchivos:{
+            type: Boolean,
+            default: false,
         },
+        vistaPrevia:{
+            type: String,
+            required:[false]
+        },
+        inversion:[{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Inversion"
+        }],
+        // inversionistas:{
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     ref: "Inversionista"
+        // },
+        // archivosProyecto:{
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     ref: "DocumentoProyecto"
+        // },
         status: {
             type: Boolean,
             default: true,

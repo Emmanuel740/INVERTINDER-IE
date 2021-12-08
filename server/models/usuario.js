@@ -46,6 +46,11 @@ const UsuarioSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "DocumentoUsuario"
         },
+        tipo:{
+            type: String,
+            required: [true, 'El tipo de usuario es requerido'],
+
+        },
         // documentosInversion: {
         //     type: Schema.Types.ObjectId,
         //     ref: "DocumentoInversion"

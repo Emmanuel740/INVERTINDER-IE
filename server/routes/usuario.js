@@ -19,12 +19,12 @@ router.post('/crear-usuario', [
 ]
 ,crearUsuario ,async(req, res)=>{});
 //GET users with middlewares
-router.get('/get-users',validationJWT,getUsuarios);
+router.get('/get-users',getUsuarios);
 
 //PUT user with middlewares
-router.put('/editar-usuario/:id',
+router.put('/editar-usuario',
 [
-  validationJWT,
+  check('id','El id es obligatorio').not().isEmpty(),
   check('nombre','El nombre es obligatorio').not().isEmpty(),
   check('user','El user es obligatorio').not().isEmpty(),
   check('apellidos','Los apellidos son obligatorios').not().isEmpty(),

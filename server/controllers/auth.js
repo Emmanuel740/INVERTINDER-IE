@@ -9,6 +9,8 @@ const login = async (req, res) => {
     const {email, password } = req.body;
 
     try {
+        console.log(req.body)
+
         //Search user by username
         // const userDB = await User.findOne({ user })
         const emailDB = await User.findOne({ email })

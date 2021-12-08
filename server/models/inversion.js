@@ -6,29 +6,38 @@ const uniquevalidator = require('mongoose-unique-validator');
 // Json to create a document for the database in mongoose
 const InversionSchema = new mongoose.Schema({
 
-    cantidad: {
-        type: String,
-        required: [true, 'El nombre del provedor es requerido'],
-        maxlength: [50, "El nombre de producto es muy largo"],
-        trim: true,
-    },
-    rendimiento: {
-        type: String,
-        required: [true, 'El nombre del provedor es requerido'],
-        maxlength: [50, "El nombre de producto es muy largo"],
-        trim: true,
-    },
     pagoCompletado: {
         type: Boolean,
         default: false
     },
     status: {
-        type: Boolean,
-        default: true
+        type: String,
+        default: 'solicitud'
     },
-    registerUser: {
+    // investorUser: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Usuario"
+    // },
+    investorUser:{
+       type: Object,
+       required: [true,'El usuario es requerido']
+    },
+    registroUsuario: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        ref: "Usuario",
+        required: [true, 'El usuario quien registra es requerido'],
+    },
+    proyecto:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Proyecto"
+    },
+    comentarios:[{
+        type: Object,
+        required: [true,'Ingresa un comentario']
+    }],
+    ofrece:{
+        type: Number,
+        default: 0
     }
 });
 InversionSchema.plugin(uniquevalidator, {

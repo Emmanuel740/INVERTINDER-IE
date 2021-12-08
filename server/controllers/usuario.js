@@ -31,10 +31,11 @@ async function uploadIMG(foto, user) {
 
 const getUsuarios = async (req, res) => {
     try {
+        const _id = req.query.id;
         const pagination = Number(req.query.pagination) || 0;
         console.log(pagination);
         const [usuarios, total] = await Promise.all([
-            Usuario.find({}, '_id nombre user email')
+            Usuario.findById({_id}, '_id nombre apellidos user email img telefono')
                 .skip(pagination)
                 .limit(5),
 
@@ -54,7 +55,7 @@ const getUsuarios = async (req, res) => {
 //<-------------POST  create new user with password encryption ---------------->
 const crearUsuario = async (req, res) => {
 
-    const { nombre, apellidos,user,email,password,telefono,img } = req.body;
+    const { nombre, apellidos,user,email,password,telefono,img,tipo } = req.body;
     let imagen = "";
 
     try {
@@ -90,6 +91,7 @@ const crearUsuario = async (req, res) => {
                 telefono,
                 password,
                 img:imagen,
+                tipo
             });
         // const salt = bcryptjs.genSaltSync();
         // users.password = bcryptjs.hashSync(password, salt);
@@ -115,7 +117,7 @@ const crearUsuario = async (req, res) => {
 //<-------------------PUT edit user  --------------------------------->
 const editarUsuario = async (req, res) => {
 
-    const _id = req.params.id;
+    const _id = req.body.id;
 
     try {
 
@@ -127,7 +129,7 @@ const editarUsuario = async (req, res) => {
             });
         }
         //Includes all values ​​except those before 3 points
-        const { password, user,email, ...dataUsuario} = req.body;
+        const { password, user,email, img, ...dataUsuario} = req.body;
 
         //validation of if exist user before modify
         if (usuarioDB.user !== req.body.user) {
@@ -150,12 +152,18 @@ const editarUsuario = async (req, res) => {
                 });
             }
         }
+        //Update Image
+        let imagen = "";
+        if(img !== ""){
+            imagen = await uploadIMG(img)
+            dataUsuario.img = imagen;
 
+        }
         //Update user
         dataUsuario.user = user;
         dataUsuario.email = email;
         const usuarioActualizado = await Usuario.findByIdAndUpdate(_id, dataUsuario, { new: true });
-
+        
         res.json({
             ok: true,
             usuario: usuarioActualizado
